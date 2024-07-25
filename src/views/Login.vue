@@ -45,7 +45,7 @@ export default {
   name: "Login",
   data() {
     return {
-      form: { role: 'ADMIN' },
+      form: { role: 'USER' },
       rules: {
         username: [
           { required: true, message: '您没有填写账号', trigger: 'blur' },
