@@ -1,5 +1,6 @@
 import axios from 'axios'
 import router from "@/router";
+import {MessageBox} from "element-ui";
 
 // 创建可一个新的axios对象
 const request = axios.create({
@@ -32,8 +33,19 @@ request.interceptors.response.use(
             res = res ? JSON.parse(res) : res
         }
         if (res.code === '401') {
-            alert(res.msg)
-            router.push('/login')
+            MessageBox.alert(res.msg, '身份过期', {
+                confirmButtonText: '确定',
+                type: 'warning',
+                callback: () => {
+                    // 用户点击“确定”后立即跳转
+                    router.push('/login');
+                }
+            });
+            // 如果用户没点击“确定”  设置5秒后自动跳转并关闭弹窗
+            setTimeout(() => {
+                MessageBox.close();
+                router.push('/login');
+            }, 5000);
         }
         return res;
     },
