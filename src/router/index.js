@@ -29,6 +29,7 @@ const routes = [
       { path: 'posts', name: 'Posts', meta: { name: '社区帖子' }, component: () => import('../views/manager/Posts') },
       { path: 'help', name: 'Help', meta: { name: '求购信息' }, component: () => import('../views/manager/Help') },
       { path: 'address', name: 'Address', meta: { name: '地址信息' }, component: () => import('../views/manager/Address') },
+      { path: 'feedback', name: 'Feedback', meta: { name: '用户反馈' }, component: () => import('../views/manager/Feedback') },
     ]
   },
   {
