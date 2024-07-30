@@ -16,13 +16,13 @@
           </div>
           <el-form :model="form" :rules="rules" ref="formRef">
             <el-form-item prop="username">
-              <el-input size="medium" prefix-icon="el-icon-user" placeholder="请输入账号" v-model="form.username"></el-input>
+              <el-input size="medium" prefix-icon="el-icon-user" placeholder="请输入账号" v-model="form.username" @keyup.enter.native="login"></el-input>
             </el-form-item>
             <el-form-item prop="password">
-              <el-input size="medium" prefix-icon="el-icon-lock" placeholder="请输入密码" show-password  v-model="form.password"></el-input>
+              <el-input size="medium" prefix-icon="el-icon-lock" placeholder="请输入密码" show-password  v-model="form.password" @keyup.enter.native="login"></el-input>
             </el-form-item>
             <el-form-item prop="confirmPassword">
-              <el-input size="medium" prefix-icon="el-icon-lock" placeholder="请确认密码" show-password  v-model="form.confirmPassword"></el-input>
+              <el-input size="medium" prefix-icon="el-icon-lock" placeholder="请确认密码" show-password  v-model="form.confirmPassword" @keyup.enter.native="login"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button size="medium" style="width: 100%; background-color: orangered; border-color: orangered; color: white" @click="login">注 册</el-button>
