@@ -1,49 +1,55 @@
 <template>
-  <div>
-    <!--头部-->
-    <div class="front-header">
-      <div class="front-header-left">
-        <img src="@/assets/imgs/logo1.png" alt="">
-        <div class="title">二手交易平台</div>
-      </div>
-      <div class="front-header-center">
-        <div @click="$router.push(item.path)" class="menu" v-for="item in menus" :key="item.path"
-             :class="{'menu-active' : item.path === $route.path }">{{ item.text }}</div>
-      </div>
-      <div class="front-header-right">
-        <div v-if="!user.username">
-          <el-button @click="$router.push('/login')">登录</el-button>
-          <el-button @click="$router.push('/register')">注册</el-button>
+  <div style="background-color: #f8f8f8; min-height: 100vh">
+    <div>
+      <!--头部-->
+      <div class="front-header">
+        <div class="front-header-left">
+          <img src="@/assets/imgs/logo1.png" alt="">
+          <div class="title">二手交易平台</div>
         </div>
-        <div v-else>
-          <el-dropdown>
-            <div class="front-header-dropdown">
-              <img :src="user.avatar" alt="" style="border-radius: 50%">
-              <div style="margin-left: 10px; color: #eee; cursor: pointer">
-                <span>{{ user.name }}</span><i class="el-icon-arrow-down" style="margin-left: 5px"></i>
+        <div class="front-header-center">
+          <div @click="$router.push(item.path)" class="menu" v-for="item in menus" :key="item.path"
+               :class="{'menu-active' : item.path === $route.path }">{{ item.text }}</div>
+        </div>
+        <div class="front-header-right">
+          <div v-if="!user.username">
+            <el-button @click="$router.push('/login')">登录</el-button>
+            <el-button @click="$router.push('/register')">注册</el-button>
+          </div>
+          <div v-else>
+            <el-dropdown>
+              <div class="front-header-dropdown">
+                <img :src="user.avatar" alt="" style="border-radius: 50%">
+                <div style="margin-left: 10px; color: #eee; cursor: pointer">
+                  <span>{{ user.name }}</span><i class="el-icon-arrow-down" style="margin-left: 5px"></i>
+                </div>
               </div>
-            </div>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>
-                <div style="text-decoration: none" @click="logout">退出</div>
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>
+                  <div style="text-decoration: none" @click="logout">退出</div>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
         </div>
       </div>
+      <!--主体-->
+      <div class="main-body">
+        <router-view ref="child" @update:user="updateUser" />
+      </div>
     </div>
-    <!--主体-->
-    <div class="main-body">
-      <router-view ref="child" @update:user="updateUser" />
-    </div>
+    <Footer></Footer>
   </div>
 
 </template>
 
 <script>
-
+import Footer from "@/components/Footer.vue";
 export default {
   name: "FrontLayout",
+  components: {
+    Footer
+  },
 
   data () {
     return {
