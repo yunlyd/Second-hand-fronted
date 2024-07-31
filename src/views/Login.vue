@@ -32,7 +32,7 @@
                   :class="{'logging-in': isLoggingIn}"
                   size="medium"
                   style="width: 100%; background-color: orangered; border-color: orangered; color: white"
-                  @click="login">登 录</el-button>
+                  @click="login" :loading="isLoggingIn">登 录</el-button>
             </el-form-item>
           </el-form>
         </div>
