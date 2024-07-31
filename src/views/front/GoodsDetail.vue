@@ -14,8 +14,10 @@
         <div style="margin-bottom: 20px"><span style="color: #666">卖家：</span> {{ goods.userName }}</div>
         <div style="margin-bottom: 40px"><span style="color: #666">发布日期：</span> {{ goods.date }}</div>
         <div>
-          <el-button size="medium" style="background-color: orangered; color: #eee; border-color: orangered">点赞</el-button>
-          <el-button size="medium" type="warning">收藏</el-button>
+          <el-button v-if="!goods.userLikes" @click="addLikes" size="medium" style="background-color: orangered; color: #eee; border-color: orangered">点赞</el-button>
+          <el-button v-if="goods.userLikes" @click="addLikes" size="medium" style="background-color: orangered; color: #eee; border-color: orangered">已点赞</el-button>
+          <el-button v-if="!goods.userCollect" @click="addCollect" size="medium" type="warning">收藏</el-button>
+          <el-button v-if="goods.userCollect" @click="addCollect" size="medium" type="warning">已收藏</el-button>
           <el-button size="medium" type="danger">立即购买</el-button>
         </div>
       </div>
@@ -50,7 +52,10 @@ export default {
     }
   },
   created() {
-    this.load()
+    // 先更新浏览数
+    this.$request.put('/goods/updateReadCount/' + this.id).then(res => {
+      this.load()
+    })
   },
   methods: {
     changeItem(current) {
@@ -60,7 +65,27 @@ export default {
       this.$request.get('/goods/selectById/' + this.id).then(res => {
         this.goods = res.data || {}
       })
-    }
+    },
+    addCollect() {
+      this.$request.post('/collect/add', { fid: this.goods.id, module: 'goods' }).then(res => {
+        if (res.code === '200') {
+          this.$message.success('操作成功')
+          this.load()
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
+    addLikes() {
+      this.$request.post('/likes/add', { fid: this.goods.id, module: 'goods' }).then(res => {
+        if (res.code === '200') {
+          this.$message.success('操作成功')
+          this.load()
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
   }
 }
 </script>
