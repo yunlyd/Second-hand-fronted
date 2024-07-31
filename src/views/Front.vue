@@ -26,7 +26,10 @@
               </div>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
-                  <div style="text-decoration: none" @click="logout">退出</div>
+                  <div @click="$router.push('/front/collect')">我的收藏</div>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <div style="text-decoration: none" @click="logout">退出登录</div>
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>

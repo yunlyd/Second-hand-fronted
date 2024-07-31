@@ -40,6 +40,7 @@ const routes = [
       { path: 'home', component: () => import('../views/front/Home') },
       { path: 'person', component: () => import('../views/front/Person') },
       { path: 'goodsDetail', component: () => import('../views/front/GoodsDetail') },
+      { path: 'collect', component: () => import('../views/front/Collect') },
     ]
   },
   { path: '/login', name: 'Login', meta: { name: '登录' }, component: () => import('../views/Login.vue') },
