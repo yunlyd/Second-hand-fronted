@@ -28,7 +28,11 @@
               </el-select>
             </el-form-item>
             <el-form-item>
-              <el-button size="medium" style="width: 100%; background-color: orangered; border-color: orangered; color: white" @click="login">登 录</el-button>
+              <el-button
+                  :class="{'logging-in': isLoggingIn}"
+                  size="medium"
+                  style="width: 100%; background-color: orangered; border-color: orangered; color: white"
+                  @click="login">登 录</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -45,6 +49,7 @@ export default {
   name: "Login",
   data() {
     return {
+      isLoggingIn: false,
       form: { role: 'USER' },
       rules: {
         username: [
@@ -63,20 +68,29 @@ export default {
     login() {
       this.$refs['formRef'].validate((valid) => {
         if (valid) {
+          this.isLoggingIn = true;
           // 验证通过
           this.$request.post('/login', this.form).then(res => {
             if (res.code === '200') {
               localStorage.setItem("xm-user", JSON.stringify(res.data))  // 存储用户数据
-              if (res.data.role === 'ADMIN') {
-                this.$router.push('/home')  // 跳转主页
-              } else {
-                this.$router.push('/front/home')  // 跳转主页
-              }
-              this.$message.success('登录成功')
+              setTimeout(() => {
+                if (res.data.role === 'ADMIN') {
+                  this.$router.push('/home')  // 跳转主页
+                } else {
+                  this.$router.push('/front/home')  // 跳转主页
+                }
+                this.$message.success('登录成功')
+                this.isLoggingIn = false; // 请求完成后恢复按钮状态
+              }, 500); // 延迟0.5秒
             } else {
+              this.isLoggingIn = false; // 登录失败时恢复按钮状态
               this.$message.error(res.msg)
             }
-          })
+          }).catch(() => {
+            this.isLoggingIn = false; // 请求失败时恢复按钮状态
+          });
+        } else {
+          this.isLoggingIn = false; // 验证未通过时恢复按钮状态
         }
       })
     }
@@ -92,5 +106,9 @@ export default {
 }
 a {
   color: #2a60c9;
+}
+.logging-in {
+  background-color: #e3e3e3 !important;
+  border-color: #e3e3e3 !important;
 }
 </style>

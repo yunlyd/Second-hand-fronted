@@ -25,7 +25,10 @@
               <el-input size="medium" prefix-icon="el-icon-lock" placeholder="请确认密码" show-password  v-model="form.confirmPassword" @keyup.enter.native="login"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button size="medium" style="width: 100%; background-color: orangered; border-color: orangered; color: white" @click="login">注 册</el-button>
+              <el-button
+                  :class="{'logging-in': isLoggingIn}"
+                  size="medium" style="width: 100%; background-color: orangered; border-color: orangered; color: white"
+                  @click="login">注 册</el-button>
             </el-form-item>
           </el-form>
         </div>
@@ -52,6 +55,7 @@ export default {
       }
     }
     return {
+      isLoggingIn: false,
       form: { role: 'USER' },
       rules: {
         username: [
@@ -73,15 +77,24 @@ export default {
     login() {
       this.$refs['formRef'].validate((valid) => {
         if (valid) {
+          this.isLoggingIn = true;
           // 验证通过
           this.$request.post('/register', this.form).then(res => {
             if (res.code === '200') {
-              this.$router.push('/login')
-              this.$message.success('注册成功')
+              setTimeout(() => {
+                this.$router.push('/login')
+                this.$message.success('注册成功')
+                this.isLoggingIn = false; // 请求完成后恢复按钮状态
+              }, 500); // 延迟0.5秒
             } else {
               this.$message.error(res.msg)
+              this.isLoggingIn = false; // 登录失败时恢复按钮状态
             }
-          })
+          }).catch(() => {
+            this.isLoggingIn = false; // 请求失败时恢复按钮状态
+          });
+        } else {
+          this.isLoggingIn = false; // 验证未通过时恢复按钮状态
         }
       })
     }
@@ -97,5 +110,9 @@ export default {
 }
 a {
   color: #2a60c9;
+}
+.logging-in {
+  background-color: #e3e3e3 !important;
+  border-color: #e3e3e3 !important;
 }
 </style>
