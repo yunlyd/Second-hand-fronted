@@ -2,8 +2,10 @@
   <div style="margin: 0 auto; padding: 10px 0; width: 50%">
     <div style="display: flex; grid-gap: 20px; margin-bottom: 40px">
       <img :src="goods.img" alt="" style="width: 50%; height: 400px; display: block">
-      <div>
-        <div style="font-weight: bold; font-size: 26px; margin: 20px 0">{{ goods.name }}</div>
+      <div style="flex: 1; width: 0">
+        <el-tooltip :content="goods.name" placement="top-start">
+          <div style="width: 100%; font-weight: bold; font-size: 26px; margin: 20px 0" class="line1">{{ goods.name }}</div>
+        </el-tooltip>
         <div style="color: #666; font-size: 16px;">
           <span>浏览 {{ goods.readCount }}</span>
           <span style="margin-left: 20px">点赞 {{ goods.likesCount }}</span>
@@ -94,5 +96,10 @@ export default {
 .active {
   background-color: orangered;
   color: #eee;
+}
+.line1 {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
