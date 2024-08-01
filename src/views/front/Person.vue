@@ -39,15 +39,15 @@
           <el-input show-password v-model="user.password" placeholder="原始密码"></el-input>
         </el-form-item>
         <el-form-item label="新密码" prop="newPassword">
-          <el-input show-password v-model="user.newPassword" placeholder="新密码"></el-input>
+          <el-input show-password v-model="user.newPassword" placeholder="新密码" @keyup.enter.native="save"></el-input>
         </el-form-item>
         <el-form-item label="确认密码" prop="confirmPassword">
-          <el-input show-password v-model="user.confirmPassword" placeholder="确认密码"></el-input>
+          <el-input show-password v-model="user.confirmPassword" placeholder="确认密码" @keyup.enter.native="save"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="fromVisible = false">取 消</el-button>
-        <el-button type="primary" @click="save">确 定</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="save" :loading="isLoggingIn">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -66,18 +66,19 @@ export default {
       }
     }
     return {
+      isLoggingIn: false,
       user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
       dialogVisible: false,
 
       rules: {
         password: [
-          { required: true, message: '请输入原始密码', trigger: 'blur' },
+          {required: true, message: '请输入原始密码', trigger: 'blur'},
         ],
         newPassword: [
-          { required: true, message: '请输入新密码', trigger: 'blur' },
+          {required: true, message: '请输入新密码', trigger: 'blur'},
         ],
         confirmPassword: [
-          { validator: validatePassword, required: true, trigger: 'blur' },
+          {validator: validatePassword, required: true, trigger: 'blur'},
         ],
       }
     }
@@ -88,7 +89,7 @@ export default {
   methods: {
     update() {
       // 保存当前的用户信息到数据库
-      this.$request.put('/admin/update', this.user).then(res => {
+      this.$request.put('/user/update', this.user).then(res => {
         if (res.code === '200') {
           // 成功更新
           this.$message.success('保存成功')
@@ -113,12 +114,17 @@ export default {
     save() {
       this.$refs.formRef.validate((valid) => {
         if (valid) {
+          this.isLoggingIn = true;
           this.$request.put('/updatePassword', this.user).then(res => {
             if (res.code === '200') {
-              // 成功更新
-              this.$message.success('修改密码成功')
-              this.$router.push('/login')
+              setTimeout(() => {
+                // 成功更新
+                this.$message.success('修改密码成功')
+                this.isLoggingIn = false; // 请求完成后恢复按钮状态
+                this.$router.push('/login')
+              }, 500); // 延迟0.5秒
             } else {
+              this.isLoggingIn = false; // 登录失败时恢复按钮状态
               this.$message.error(res.msg)
             }
           })
@@ -130,22 +136,26 @@ export default {
 </script>
 
 <style scoped>
-/deep/.el-form-item__label {
+/deep/ .el-form-item__label {
   font-weight: bold;
 }
-/deep/.el-upload {
+
+/deep/ .el-upload {
   border-radius: 50%;
 }
-/deep/.avatar-uploader .el-upload {
+
+/deep/ .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   cursor: pointer;
   position: relative;
   overflow: hidden;
   border-radius: 50%;
 }
-/deep/.avatar-uploader .el-upload:hover {
+
+/deep/ .avatar-uploader .el-upload:hover {
   border-color: #409EFF;
 }
+
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
@@ -155,6 +165,7 @@ export default {
   text-align: center;
   border-radius: 50%;
 }
+
 .avatar {
   width: 120px;
   height: 120px;
