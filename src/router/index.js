@@ -43,6 +43,7 @@ const routes = [
       { path: 'goodsDetail', component: () => import('../views/front/GoodsDetail') },
       { path: 'collect', component: () => import('../views/front/Collect') },
       { path: 'notice', component: () => import('../views/front/Notice') },
+      { path: 'addGoods', component: () => import('../views/front/AddGoods') },
     ]
   },
   { path: '/login', name: 'Login', meta: { name: '登录' }, component: () => import('../views/Login.vue') },
