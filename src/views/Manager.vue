@@ -50,6 +50,7 @@
             <el-menu-item index="/help">求购信息</el-menu-item>
             <el-menu-item index="/address">地址信息</el-menu-item>
             <el-menu-item index="/feedback">用户反馈</el-menu-item>
+            <el-menu-item index="/comment">评论信息</el-menu-item>
           </el-submenu>
 
           <el-submenu index="user">
