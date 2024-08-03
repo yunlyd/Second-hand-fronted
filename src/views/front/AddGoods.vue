@@ -59,7 +59,7 @@ export default {
       user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
       categoryList: [],
       form: {
-        saleStatus: '下架'
+        saleStatus: '上架'
       },
       rules: {
         name: [
@@ -109,6 +109,7 @@ export default {
           }).then(res => {
             if (res.code === '200') {  // 表示成功保存
               this.$message.success('发布成功')
+              this.$router.push('/front/goods')
             } else {
               this.$message.error(res.msg)  // 弹出错误的信息
             }
