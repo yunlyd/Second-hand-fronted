@@ -96,8 +96,19 @@ export default {
     },
     // 退出登录
     logout() {
-      localStorage.removeItem("xm-user");
-      this.$router.push("/login");
+      const loading = this.$loading({
+        lock: true,
+        text: '正在退出...',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      });
+
+      setTimeout(() => {
+        localStorage.removeItem("xm-user");
+        loading.close();  // 关闭加载效果
+        this.$router.push("/login");
+        this.$message.success('退出登录成功')
+      }, 1000);  // 延迟 0.3 秒后执行退出操作
     },
   }
 
