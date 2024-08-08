@@ -46,6 +46,7 @@ const routes = [
       { path: 'addGoods', component: () => import('../views/front/AddGoods') },
       { path: 'goods', component: () => import('../views/front/Goods') },
       { path: 'address', component: () => import('../views/front/Address') },
+      { path: 'orders', component: () => import('../views/front/Orders') },
     ]
   },
   { path: '/login', name: 'Login', meta: { name: '登录' }, component: () => import('../views/Login.vue') },

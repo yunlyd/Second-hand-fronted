@@ -84,6 +84,21 @@ export default {
     this.loadAddress()
   },
   methods: {
+    addOrder() {
+      if (!this.form.addressId) {
+        this.$message.warning('请选择收货地址')
+        return
+      }
+      this.form.goodsId = this.id
+      this.$request.post('/orders/add', this.form).then(res => {
+        if (res.code === '200') {
+          this.$message.success('下单成功')
+          this.$router.push('/front/orders')
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
     loadAddress() {
       this.$request.get('/address/selectAll').then(res => {
         this.addressList = res.data || []
